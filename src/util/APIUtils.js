@@ -49,6 +49,13 @@ export function getPhotos() {
     });
 }
 
+export function getMorePhotos(link) {
+    return request({
+        url: API_BASE_URL + "/user/me/photos?more=" + link,
+        method: 'GET'
+    });
+}
+
 export function signup(signupRequest) {
     return request({
         url: API_BASE_URL + "/auth/signup",

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Photos.css';
-import { getPhotos } from '../../util/APIUtils';
+import { getPhotos, getMorePhotos } from '../../util/APIUtils';
 class Photos extends Component {
    
     constructor(props) {
@@ -8,11 +8,12 @@ class Photos extends Component {
         console.log(props);
 
         this.state = {
-            currentAlbum: null,
-            currentAlbumName: null,
-            currentAlbumCount:null
+            listItems:null,
+            nextItems:null,
+            previousItems:null
         }
-
+        this.nextlist = this.nextlist.bind(this);
+        this.previouslist = this.previouslist.bind(this);
     }
 
     
@@ -20,18 +21,49 @@ class Photos extends Component {
       componentWillMount(){
         getPhotos()
         .then(response => {
-            console.log(response.cover_photo.picture)
+            console.log(response)
             this.setState({
-                currentAlbumPicture: response.cover_photo.picture,
-                currentAlbumName: response.name,
-                currentAlbumCount: response.count
+                nextItems : response.albums.paging.next,
+                /*previousItems : response.data.paging.previous,*/
+                listItems : response.albums.data.map((photo) =>
+              <li className="col-3 float-left" key={photo.id}>
+              <a href="http://localhost:3000/profile"><img src={photo.cover_photo.picture} alt={photo.name}/>
+              <p>{photo.name} ({photo.count})</p></a>
+              </li>
+              
+            )
+                
               });
+              
             
         }).catch(error => {  
         });
       }
 
-  
+    nextlist(){
+        getMorePhotos(this.state.nextItems)
+        .then(response => {
+            console.log(response)
+            this.setState({
+                listItems : response.albums.data.map((photo) =>
+              <li className="col-3 float-left" key={photo.id}>
+              <a href="http://localhost:3000/profile"><img src={photo.cover_photo.picture} alt={photo.name}/>
+              <p>{photo.name} ({photo.count})</p></a>
+              </li>
+              
+            ),
+                nextItems : response.data.paging.next,
+                previousItems : response.data.paging.previous 
+              });
+              
+            
+        }).catch(error => {  
+        });
+    }
+
+    previouslist(){
+
+    }
 
 
     render() {
@@ -45,11 +77,20 @@ class Photos extends Component {
                         </div>
                     </div>
                     <h4 style={{"textAlign":"center"}}>Albuns</h4>
-                    <div>
-                        <img src={this.state.currentAlbumPicture} alt={this.state.currentAlbumName}/>
-                        <p>{this.state.currentAlbumName} ({this.state.currentAlbumCount})</p>
-                    </div>
-                </div>    
+                    <ul>
+                        {this.state.listItems}
+                    </ul>
+                </div>   
+               <button
+                type="button" 
+                onClick={() =>this.previouslist() }>
+                    Previous
+                </button>
+                <button
+                type="button" 
+                onClick={() =>this.nextlist() }>
+                    Next
+            </button> 
             </div>
         );
     }

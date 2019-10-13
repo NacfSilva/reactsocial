@@ -41,6 +41,16 @@
     color: #fff;
     font-size: 3em;
 }
+.col-3{
+    width:33%;
+}
+.float-left{
+    float:left;
+}
+
+ul li{
+    list-style-type: none;
+}
 /*<img className="imgshake2" src={`${imgurl}`}  alt="" style={{"height" : "50px", "width" : "auto"}} />
 
                         this.state.currentAlbum.cover_photo.picture ? (
