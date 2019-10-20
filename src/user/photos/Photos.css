@@ -51,15 +51,10 @@
 ul li{
     list-style-type: none;
 }
-/*<img className="imgshake2" src={`${imgurl}`}  alt="" style={{"height" : "50px", "width" : "auto"}} />
 
-                        this.state.currentAlbum.cover_photo.picture ? (
-             <img src={`${imgurl}`} alt=""/>
-          ) : (
-                <div className="text-avatar">
-                   <span>{this.state.currentAlbum && this.state.currentAlbum}</span>
-                </div>
-           )
+.Buttons-space{
+    position: relative;
+    width: 100%;
+    height: 30px;
 
-
-*/
+}
